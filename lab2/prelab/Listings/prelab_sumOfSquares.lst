@@ -1,0 +1,92 @@
+A51 MACRO ASSEMBLER  PRELAB_SUMOFSQUARES                                                  08/04/2015 14:12:23 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02c
+OBJECT MODULE PLACED IN .\Objects\prelab_sumOfSquares.obj
+ASSEMBLER INVOKED BY: D:\Programmes\Programmes\C51\BIN\A51.EXE prelab_sumOfSquares.asm SET(SMALL) DEBUG PRINT(.\Listings
+                      \prelab_sumOfSquares.lst) OBJECT(.\Objects\prelab_sumOfSquares.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;---------------------------------------------------------------
+                       2     ;TITLE: PRELAB2
+                       3     ;AUTHOR : KALPESH PATIL (130040019)
+                       4     ;---------------------------------------------------------------
+                       5     
+  0090                 6             LED EQU P1
+                       7     
+0000                   8             ORG 00H
+0000 02007E            9             LJMP MAIN
+                      10     
+0050                  11             ORG 50H
+                      12     
+0050                  13     sumOfSquares:
+                      14             USING 0
+                      15                     
+0050 C0D0             16             PUSH PSW
+0052 C001             17             PUSH AR1
+0054 C002             18             PUSH AR2
+0056 C003             19             PUSH AR3
+0058 C004             20             PUSH AR4
+005A C0F0             21             PUSH B
+                      22             
+005C AA50             23             MOV R2, 50H
+005E A951             24             MOV R1, 51H
+0060 AB00             25             MOV R3, 00H
+0062 AC00             26             MOV R4, 00H
+                      27             
+0064                  28             FOR2:
+0064 0B               29             INC R3
+0065 EB               30             MOV A, R3
+0066 8BF0             31             MOV B, R3
+0068 A4               32             MUL AB
+0069 2C               33             ADD A,R4
+006A FC               34             MOV R4,A
+006B F7               35             MOV @R1,A
+006C 09               36             INC R1
+006D EB               37             MOV A,R3
+006E B550F3           38             CJNE A,50H,FOR2
+                      39             
+0071 D0F0             40             POP B
+0073 D004             41             POP AR4
+0075 D003             42             POP AR3
+0077 D002             43             POP AR2
+0079 D001             44             POP AR1
+007B D0D0             45             POP PSW
+                      46             
+007D 22               47             RET
+                      48             
+007E                  49     MAIN:
+007E 755007           50             MOV 50H, #7
+0081 755160           51             MOV 51H, #60H
+0084 120050           52             LCALL sumOfSquares
+                      53             
+                      54     END
+                                     
+                                     
+                                     
+A51 MACRO ASSEMBLER  PRELAB_SUMOFSQUARES                                                  08/04/2015 14:12:23 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+AR1. . . . . . . .  D ADDR   0001H   A   
+AR2. . . . . . . .  D ADDR   0002H   A   
+AR3. . . . . . . .  D ADDR   0003H   A   
+AR4. . . . . . . .  D ADDR   0004H   A   
+B. . . . . . . . .  D ADDR   00F0H   A   
+FOR2 . . . . . . .  C ADDR   0064H   A   
+LED. . . . . . . .  D ADDR   0090H   A   
+MAIN . . . . . . .  C ADDR   007EH   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+PSW. . . . . . . .  D ADDR   00D0H   A   
+SUMOFSQUARES . . .  C ADDR   0050H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

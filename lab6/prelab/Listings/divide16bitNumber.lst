@@ -1,0 +1,149 @@
+A51 MACRO ASSEMBLER  DIVIDE16BITNUMBER                                                    09/04/2015 04:03:14 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02c
+OBJECT MODULE PLACED IN .\Objects\divide16bitNumber.obj
+ASSEMBLER INVOKED BY: D:\Programmes\Programmes\C51\BIN\A51.EXE ..\labwork\divide16bitNumber.asm SET(SMALL) DEBUG PRINT(.
+                      \Listings\divide16bitNumber.lst) OBJECT(.\Objects\divide16bitNumber.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     org 00h
+                       2     using 0
+                       3             
+0000 020500            4     ljmp main
+                       5     
+                       6     
+                       7             
+                       8             
+0003                   9     D16BY8: 
+0003 8960             10             mov  60h, r1
+0005 8861             11             mov  61h, r0
+0007 8D62             12             mov 62h, r5
+                      13             
+0009 C0D0             14             push psw
+000B C0F0             15             push B 
+000D C002             16             push aR2 
+000F C003             17             push aR3 
+0011 C006             18             push aR6 
+0013 C007             19             push aR7 
+0015 7400             20             mov a, #0
+0017 B56205           21             CJNE    A,62h,OK
+                      22     
+001A                  23     DIVIDE_BY_ZERO:
+001A D2D2             24             SETB    OV
+001C 020062           25             ljmp return
+                      26             
+                      27     
+001F F9               28     OK:     MOV     r1,A     ;r1 low byte of quotient
+0020 7A08             29             MOV     R2,#8
+0022 AB60             30             MOV     R3,60h
+0024 AE61             31             MOV     R6,61h
+0026 FF               32             MOV     R7,A
+                      33     
+0027 EE               34             MOV     A,R6
+0028 8DF0             35             MOV     B,R5
+002A 84               36             DIV     AB
+002B F8               37             MOV     r0,A    ;r0 high byte of quotient
+002C AEF0             38             MOV     R6,B
+                      39     
+002E                  40     TIMES_TWO:
+002E EB               41             MOV     A,R3
+002F 33               42             RLC     A
+0030 FB               43             MOV     R3,A
+0031 EE               44             MOV     A,R6
+0032 33               45             RLC     A
+0033 FE               46             MOV     R6,A
+0034 EF               47             MOV     A,R7
+0035 33               48             RLC     A
+0036 FF               49             MOV     R7,A
+                      50     
+0037                  51     COMPARE:
+0037 B40007           52             CJNE    A,#0,DONE
+003A EE               53             MOV     A,R6
+                      54             
+003B B56203           55             CJNE    A,62h,DONE
+003E BB0000           56             CJNE    R3,#0,DONE
+0041 B3               57     DONE:   CPL     C
+A51 MACRO ASSEMBLER  DIVIDE16BITNUMBER                                                    09/04/2015 04:03:14 PAGE     2
+
+                      58     
+0042                  59     BUILD_QUOTIENT:
+0042 E9               60             MOV     A,r1
+0043 33               61             RLC     A
+0044 F9               62             MOV     r1,A
+0045 30E007           63             JNB     ACC.0,LOOP
+                      64     
+0048                  65     SUBTRACT:
+0048 EE               66             MOV     A,R6
+0049 9D               67             SUBB    A,R5
+004A FE               68             MOV     R6,A
+004B EF               69             MOV     A,R7
+004C 9400             70             SUBB    A,#0
+004E FF               71             MOV     R7,A
+                      72     
+004F DADD             73     LOOP:   DJNZ    R2,TIMES_TWO
+                      74     
+0051 ED               75             MOV     A,R5
+0052 89F0             76             MOV     B,r1
+0054 A4               77             MUL     AB
+0055 F5F0             78             MOV     B,A
+0057 E560             79             MOV     A,60h
+0059 95F0             80             SUBB    A,B
+005B F563             81             MOV     63h,A    ;remainder in 62h
+005D C2D2             82             CLR     OV
+005F 020062           83     ljmp return
+                      84     
+0062                  85     return:
+0062 D007             86             pop ar7
+0064 D006             87             pop ar6
+0066 D003             88             pop ar3
+0068 D003             89             pop ar3
+006A D0F0             90             pop b
+006C D0D0             91             pop psw
+006E 22               92     ret
+                      93     
+0500                  94     org 500h
+0500                  95     main:
+0500 7817             96             mov r0, #017h
+0502 7903             97             mov r1, #03h
+0504 7D05             98             mov r5, #5
+                      99             
+0506 120003          100      lcall D16BY8
+0509 80FE            101      here: sjmp here
+                     102     END
+                                     
+A51 MACRO ASSEMBLER  DIVIDE16BITNUMBER                                                    09/04/2015 04:03:14 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ACC. . . . . . . .  D ADDR   00E0H   A   
+AR2. . . . . . . .  D ADDR   0002H   A   
+AR3. . . . . . . .  D ADDR   0003H   A   
+AR6. . . . . . . .  D ADDR   0006H   A   
+AR7. . . . . . . .  D ADDR   0007H   A   
+B. . . . . . . . .  D ADDR   00F0H   A   
+BUILD_QUOTIENT . .  C ADDR   0042H   A   
+COMPARE. . . . . .  C ADDR   0037H   A   
+D16BY8 . . . . . .  C ADDR   0003H   A   
+DIVIDE_BY_ZERO . .  C ADDR   001AH   A   
+DONE . . . . . . .  C ADDR   0041H   A   
+HERE . . . . . . .  C ADDR   0509H   A   
+LOOP . . . . . . .  C ADDR   004FH   A   
+MAIN . . . . . . .  C ADDR   0500H   A   
+OK . . . . . . . .  C ADDR   001FH   A   
+OV . . . . . . . .  B ADDR   00D0H.2 A   
+PSW. . . . . . . .  D ADDR   00D0H   A   
+RETURN . . . . . .  C ADDR   0062H   A   
+SUBTRACT . . . . .  C ADDR   0048H   A   
+TIMES_TWO. . . . .  C ADDR   002EH   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

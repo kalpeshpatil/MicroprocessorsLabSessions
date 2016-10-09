@@ -1,0 +1,155 @@
+A51 MACRO ASSEMBLER  DISPLAYVALUES                                                        08/12/2015 13:24:08 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02c
+OBJECT MODULE PLACED IN .\Objects\displayValues.obj
+ASSEMBLER INVOKED BY: D:\Programmes\Programmes\C51\BIN\A51.EXE ..\labwork\displayValues.asm SET(SMALL) DEBUG PRINT(.\Lis
+                      tings\displayValues.lst) OBJECT(.\Objects\displayValues.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     org 0
+                       2     USING 0
+0000 020080            3     ljmp main
+                       4     
+0003                   5     DELAY:
+                       6             USING 0
+0003 C0D0              7             PUSH PSW        ;to make sure valuse of registers are stored somewhere 
+0005 C001              8             PUSH AR1
+0007 C002              9             PUSH AR2
+0009 C003             10             PUSH AR3
+000B C0F0             11             PUSH B
+000D E54F             12             MOV A, 4FH      ; D
+000F 75F00A           13             MOV B, #10      
+0012 A4               14             MUL AB          ;No. of times 50ms blocks to be executed to generate D/2 sec delay
+0013 FB               15             MOV R3, A
+                      16             
+0014                  17             BACK2:                                  ;upper loop running 10*D times
+0014 7AC8             18             MOV R2,#200                             
+0016                  19             BACK1:                                  ;inner loop of 50ms delay
+0016 79FF             20                     MOV R1,#0FFH
+0018                  21                     BACK :                          ;inner to inner loop
+0018 D9FE             22                             DJNZ R1, BACK
+001A DAFA             23                     DJNZ R2, BACK1
+001C DBF6             24             DJNZ R3, BACK2
+                      25             
+                      26             
+001E D0F0             27             POP B           ;restoring values of the registers
+0020 D003             28             POP AR3
+0022 D002             29             POP AR2
+0024 D001             30             POP AR1
+0026 D0D0             31             POP PSW 
+0028 22               32             RET
+                      33     
+                      34     
+0029                  35     displayValues:
+0029 C0D0             36             push psw
+002B C000             37             push AR0
+002D C001             38             push AR1
+002F C002             39             push AR2
+0031 C003             40             push AR3
+0033 A951             41             MOV R1, 51H
+0035 AA50             42             MOV R2, 50H
+0037                  43             looper:
+0037 75900F           44             MOV P1, #0FH
+003A E590             45             MOV A, P1
+003C 540F             46             ANL A, #0FH
+003E FB               47             MOV R3, A
+003F EA               48             MOV A, R2
+0040 9B               49             SUBB A, R3
+0041 4017             50             JC not_valid
+0043 E551             51             MOV A, 51H
+0045 2B               52             ADD A, R3
+0046 14               53             DEC A
+0047 F8               54             MOV R0,A
+0048 E6               55             MOV A, @R0
+0049 F590             56             MOV P1, A
+004B 754F04           57             MOV 4FH,# 4
+A51 MACRO ASSEMBLER  DISPLAYVALUES                                                        08/12/2015 13:24:08 PAGE     2
+
+004E 120003           58             LCALL Delay
+0051 E6               59             MOV A, @R0
+0052 C4               60             SWAP A
+0053 F590             61             MOV P1, A
+0055 120003           62             LCALL Delay
+0058 80DD             63             sjmp looper
+                      64             
+005A                  65             not_valid:
+005A 75900F           66             MOV P1,#00FH
+005D 8000             67             sjmp fin
+                      68             
+005F                  69             fin:
+005F D003             70             POP AR3
+0061 D002             71             POP AR2
+0063 D001             72             POP AR1
+0065 D000             73             POP AR0
+0067 D0D0             74             POP psw
+0069 22               75             RET
+                      76     
+006A                  77     sequence:
+                      78             USING 0
+006A C0D0             79             PUSH PSW ;to make sure valuse of registers are stored somewhere 
+006C C001             80             PUSH AR1
+006E C002             81             PUSH AR2
+                      82             
+0070 AA50             83             MOV R2, 50H ;number of elements
+0072 A951             84             MOV R1, 51H     ;first element
+                      85             
+0074                  86             WRITE:  ;will wirte decreasing sequence N,N-1,N-2...2,1 from first element
+0074 EA               87             MOV A, R2
+0075 F7               88             MOV @R1, A
+0076 09               89             INC R1
+0077 DAFB             90             DJNZ R2, WRITE
+                      91             
+0079 D002             92             POP AR2 ;restoring values of registers
+007B D001             93             POP AR1
+007D D0D0             94             POP PSW
+007F 22               95             RET
+                      96             
+0080                  97             MAIN:
+0080 75500A           98             MOV 50H, #10
+0083 755153           99             MOV 51H, #53H
+0086 12006A          100             LCALL sequence
+                     101             
+0089 120029          102             LCALL displayValues
+                     103             
+                     104             END
+                                     
+                                     
+                                     
+                                     
+                                     
+                                     
+                                     
+A51 MACRO ASSEMBLER  DISPLAYVALUES                                                        08/12/2015 13:24:08 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+AR0. . . . . . . .  D ADDR   0000H   A   
+AR1. . . . . . . .  D ADDR   0001H   A   
+AR2. . . . . . . .  D ADDR   0002H   A   
+AR3. . . . . . . .  D ADDR   0003H   A   
+B. . . . . . . . .  D ADDR   00F0H   A   
+BACK . . . . . . .  C ADDR   0018H   A   
+BACK1. . . . . . .  C ADDR   0016H   A   
+BACK2. . . . . . .  C ADDR   0014H   A   
+DELAY. . . . . . .  C ADDR   0003H   A   
+DISPLAYVALUES. . .  C ADDR   0029H   A   
+FIN. . . . . . . .  C ADDR   005FH   A   
+LOOPER . . . . . .  C ADDR   0037H   A   
+MAIN . . . . . . .  C ADDR   0080H   A   
+NOT_VALID. . . . .  C ADDR   005AH   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+PSW. . . . . . . .  D ADDR   00D0H   A   
+SEQUENCE . . . . .  C ADDR   006AH   A   
+WRITE. . . . . . .  C ADDR   0074H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

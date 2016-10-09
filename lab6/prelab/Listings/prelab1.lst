@@ -1,0 +1,166 @@
+A51 MACRO ASSEMBLER  PRELAB1                                                              09/02/2015 19:16:01 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02c
+NO OBJECT MODULE REQUESTED
+ASSEMBLER INVOKED BY: D:\Programmes\Programmes\C51\BIN\A51.EXE prelab1.asm SET(SMALL) DEBUG PRINT(.\Listings\prelab1.lst
+                      ) OBJECT(.\Objects\prelab1.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;Kalpesh Patil (130040019)
+                       2     ;Control Duty cycle
+  0094                 3     led equ p1.4
+                       4     using 0
+0000                   5     org 00h
+0000 020600            6     ljmp main
+                       7     
+000B                   8     org 000Bh
+000B                   9             cjne r5, r7, notEqual
+*** __________________________________________^
+*** ______________________________________________^
+*** ERROR #A22 IN 9 (prelab1.asm, LINE 9): EXPRESSION TYPE DOES NOT MATCH INSTRUCTION
+*** ERROR #A45 IN 9 (prelab1.asm, LINE 9): UNDEFINED SYMBOL (PASS-2)
+000B 020514           10             ljmp makeLow
+000E                  11             notZero:
+000E DF03             12             djnz r7, again2ms
+                      13     
+0010 020500           14             ljmp changeVal
+                      15     
+0013                  16             again2ms:
+0013 758A5F           17                     mov tl0, #05fh  ;to generate 2ms
+0016 758CF0           18                     mov th0, #0f0h  ;to generate 2ms
+0019 D28C             19                     setb tr0;
+001B 32               20             reti
+                      21             
+                      22             
+0500                  23     org 500h
+0500                  24     changeVal:
+0500 C28C             25                     clr tr0
+0502 C28D             26                     clr tf0
+0504 758A5F           27                     mov tl0, #05fh  ;to generate 2ms
+0507 758CF0           28                     mov th0, #0f0h  ;to generate 2ms
+050A 209407           29                     jb led, makeLow
+050D EE               30                             mov A, r6
+050E FF               31                             mov r7, a
+050F D294             32                             setb led
+0511 D28C             33                             setb tr0
+0513 32               34                     reti
+0514                  35                     makeLow:
+0514 C3               36                             clr c
+0515 740F             37                             mov A, #15
+0517 9E               38                             subb A, r6
+0518 FF               39                             mov r7, A
+0519 C294             40                             clr led
+051B D28C             41                             setb tr0
+051D 32               42                     reti
+                      43                     
+                      44     
+051E                  45     timerInit:
+051E D2AF             46             setb EA
+0520 D2A9             47             setb ET0
+0522 D2AB             48             setb ET1
+0524 758901           49             mov tmod, #01h
+0527 22               50             ret
+                      51     
+0528                  52     start2ms:
+0528 758A5F           53             mov tl0, #05fh  ;to generate 2ms
+A51 MACRO ASSEMBLER  PRELAB1                                                              09/02/2015 19:16:01 PAGE     2
+
+052B 758CF0           54             mov th0, #0f0h  ;to generate 2ms
+052E D28C             55             setb tr0
+0530 22               56             ret
+                      57     
+0600                  58     org 600h
+0600                  59     main:
+0600 12051E           60             lcall timerInit
+0603 754F01           61             mov 4fh, #1;
+0606 75900F           62             loo:    mov P1, #0Fh;
+0609 E590             63                             mov a, p1
+060B 540F             64                             anl a, #0fh
+060D FF               65                             mov r7,a
+060E FE               66                             mov r6,a
+060F 7D00             67                             mov r5, #0;
+                      68                             
+0611 120528           69                             lcall start2ms
+0614 12061B           70                             lcall myDelay
+0617 80ED             71                             sjmp loo
+                      72                             
+0619 80FE             73             fin: sjmp fin
+                      74     
+                      75     
+061B                  76     myDelay:
+                      77             USING 0
+061B C0D0             78             PUSH PSW        ;to make sure valuse of registers are stored somewhere 
+061D C001             79             PUSH AR1
+061F C002             80             PUSH AR2
+0621 C003             81             PUSH AR3
+0623 C0F0             82             PUSH B
+0625 E54F             83             MOV A, 4FH      ; D
+0627 75F014           84             MOV B, #20      
+062A A4               85             MUL AB          ;No. of times 50ms blocks to be executed to generate D sec delay
+062B FB               86             MOV R3, A
+                      87             
+062C                  88             BACK2:                                  ;upper loop running 10*D times
+062C 7AC8             89             MOV R2,#200                             
+062E                  90             BACK1:                                  ;inner loop of 50ms delay
+062E 79FF             91                     MOV R1,#0FFH
+0630                  92                     BACK :                          ;inner to inner loop
+0630 D9FE             93                             DJNZ R1, BACK
+0632 DAFA             94                     DJNZ R2, BACK1
+0634 DBF6             95             DJNZ R3, BACK2
+                      96             
+                      97             
+0636 D0F0             98             POP B           ;restoring values of the registers
+0638 D003             99             POP AR3
+063A D002            100             POP AR2
+063C D001            101             POP AR1
+063E D0D0            102             POP PSW 
+0640 22              103             RET
+                     104     
+                     105     end
+                             
+                                     
+A51 MACRO ASSEMBLER  PRELAB1                                                              09/02/2015 19:16:01 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+AGAIN2MS . . . . .  C ADDR   0013H   A   
+AR1. . . . . . . .  D ADDR   0001H   A   
+AR2. . . . . . . .  D ADDR   0002H   A   
+AR3. . . . . . . .  D ADDR   0003H   A   
+B. . . . . . . . .  D ADDR   00F0H   A   
+BACK . . . . . . .  C ADDR   0630H   A   
+BACK1. . . . . . .  C ADDR   062EH   A   
+BACK2. . . . . . .  C ADDR   062CH   A   
+CHANGEVAL. . . . .  C ADDR   0500H   A   
+EA . . . . . . . .  B ADDR   00A8H.7 A   
+ET0. . . . . . . .  B ADDR   00A8H.1 A   
+ET1. . . . . . . .  B ADDR   00A8H.3 A   
+FIN. . . . . . . .  C ADDR   0619H   A   
+LED. . . . . . . .  B ADDR   0090H.4 A   
+LOO. . . . . . . .  C ADDR   0606H   A   
+MAIN . . . . . . .  C ADDR   0600H   A   
+MAKELOW. . . . . .  C ADDR   0514H   A   
+MYDELAY. . . . . .  C ADDR   061BH   A   
+NOTEQUAL . . . . .    ----   -----       
+NOTZERO. . . . . .  C ADDR   000EH   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+PSW. . . . . . . .  D ADDR   00D0H   A   
+START2MS . . . . .  C ADDR   0528H   A   
+TF0. . . . . . . .  B ADDR   0088H.5 A   
+TH0. . . . . . . .  D ADDR   008CH   A   
+TIMERINIT. . . . .  C ADDR   051EH   A   
+TL0. . . . . . . .  D ADDR   008AH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR0. . . . . . . .  B ADDR   0088H.4 A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 2 ERROR(S)

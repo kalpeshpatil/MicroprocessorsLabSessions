@@ -1,0 +1,3 @@
+".\Objects\postlab.obj" 
+TO ".\Objects\prelab" 
+PRINT(".\Listings\prelab.m51") RAMSIZE(256) 

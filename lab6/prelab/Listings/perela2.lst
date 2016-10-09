@@ -1,0 +1,135 @@
+A51 MACRO ASSEMBLER  PERELA2                                                              09/02/2015 20:35:02 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02c
+OBJECT MODULE PLACED IN .\Objects\perela2.obj
+ASSEMBLER INVOKED BY: D:\Programmes\Programmes\C51\BIN\A51.EXE perela2.asm SET(SMALL) DEBUG PRINT(.\Listings\perela2.lst
+                      ) OBJECT(.\Objects\perela2.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;Kalpesh Patil (130040019)
+                       2     ;Control Duty cycle
+  0090                 3     led equ p1
+                       4     using 0
+0000                   5     org 00h
+0000 020600            6     ljmp main
+                       7     
+000B                   8     org 00bh
+000B 120039            9             lcall loadT0
+000E D28C             10             setb tr0
+0010 D90B             11             djnz r1, check2
+0012 BA0005           12             cjne r2, #0, check1
+                      13             
+                      14             ;reatTo:                                                ;read T1 in R4R5
+                      15             ;       MOV A,TH1
+                      16             ;       MOV R4,TL1
+                      17             ;       CJNE A,TH1,readTo
+                      18             ;       MOV R5,TH1
+                      19             ;LCALL trone  // reset thone and toone
+0015 120040           20             LCALL switchRead
+                      21             ;LCALL DISPLAY_MSG1
+0018 7A02             22             mov r2, #2
+001A                  23             check1:
+001A 1A               24                     dec r2
+001B 79FA             25                     mov r1, #250
+                      26             
+001D                  27             check2:
+001D B80004           28                     cjne r0, #0, check3
+0020 EF               29                     mov a, r7
+0021 FE               30                     mov r6, a
+0022 780F             31                     mov r0, #15
+                      32             
+                      33     
+                      34     
+0024                  35             check3: 
+0024 18               36                     dec r0
+0025 BE0008           37                     cjne r6,#0d,check4
+0028 75900F           38                     mov led, #0fh
+002B C2B7             39                     clr p3.7
+002D C297             40                     clr p1.7        ;1.7
+002F 32               41             reti
+0030                  42             check4:
+0030 1E               43                     dec r6
+0031 75900F           44                     MOV LED, #0FH
+0034 D2B7             45                     SETB P3.7
+0036 D297             46                     SETB P1.7       ;1.7
+0038 32               47             reti
+                      48             
+                      49                     
+                      50     
+                      51             
+                      52             
+                      53             
+                      54     
+0039                  55     loadT0:
+0039 758A5F           56             mov tl0, #05fh  ;to generate 2ms
+003C 758CF0           57             mov th0, #0f0h
+A51 MACRO ASSEMBLER  PERELA2                                                              09/02/2015 20:35:02 PAGE     2
+
+003F 22               58             ret
+                      59             
+0040                  60     switchRead:
+0040 75900F           61             mov P1, #0fh
+0043 E590             62             mov a, P1
+0045 540F             63             anl a, #0Fh
+0047 FF               64             mov r7, a       ;value of swithc in r7
+0048 FE               65             mov r6, a   ;
+0049 22               66             ret
+                      67             
+004A                  68     init:
+004A D2AF             69             setb EA
+004C D2A9             70             setb ET0
+004E D2AB             71             setb ET1
+0050 758901           72             mov tmod, #01h
+0053 780F             73             mov r0, #15     ; for 30ms delay
+0055 79FA             74             mov r1, #250; for 0.5 sec delay
+0057 7A01             75             mov r2, #1  ; for 0.5*2 = 1 sec delay
+0059 7B00             76             mov r3, #0  ; counter for 2ms block
+005B 758AFF           77             mov tl0, #0ffh  ;to generate 2ms
+005E 758CFF           78             mov th0, #0ffh  ;to generate 2ms
+0061 22               79             ret
+                      80     
+0600                  81     org 600h
+0600                  82     main:
+0600 12004A           83             lcall init
+0603 120040           84             lcall switchRead
+0606 D28C             85             setb tr0
+0608 80FE             86             stop: sjmp stop
+                      87     
+                      88     end
+                             
+                                     
+A51 MACRO ASSEMBLER  PERELA2                                                              09/02/2015 20:35:02 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+CHECK1 . . . . . .  C ADDR   001AH   A   
+CHECK2 . . . . . .  C ADDR   001DH   A   
+CHECK3 . . . . . .  C ADDR   0024H   A   
+CHECK4 . . . . . .  C ADDR   0030H   A   
+EA . . . . . . . .  B ADDR   00A8H.7 A   
+ET0. . . . . . . .  B ADDR   00A8H.1 A   
+ET1. . . . . . . .  B ADDR   00A8H.3 A   
+INIT . . . . . . .  C ADDR   004AH   A   
+LED. . . . . . . .  D ADDR   0090H   A   
+LOADT0 . . . . . .  C ADDR   0039H   A   
+MAIN . . . . . . .  C ADDR   0600H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P3 . . . . . . . .  D ADDR   00B0H   A   
+STOP . . . . . . .  C ADDR   0608H   A   
+SWITCHREAD . . . .  C ADDR   0040H   A   
+TH0. . . . . . . .  D ADDR   008CH   A   
+TL0. . . . . . . .  D ADDR   008AH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR0. . . . . . . .  B ADDR   0088H.4 A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

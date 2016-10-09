@@ -1,0 +1,115 @@
+A51 MACRO ASSEMBLER  PRELAB_ZEROOUT                                                       08/09/2015 14:17:36 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02c
+OBJECT MODULE PLACED IN .\Objects\prelab_zeroOut.obj
+ASSEMBLER INVOKED BY: D:\Programmes\Programmes\C51\BIN\A51.EXE prelab_zeroOut.asm SET(SMALL) DEBUG PRINT(.\Listings\prel
+                      ab_zeroOut.lst) OBJECT(.\Objects\prelab_zeroOut.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     
+                       2     ; Setup code at reset vector of 8051 to jump to our main task 
+0000                   3     org 0
+0000 02001E            4     ljmp main               
+                       5     
+                       6     
+                       7     ;=========================================
+0003                   8     readNibble:
+                       9     ;=========================================
+                      10     ; Routine to read in Port lines P1.3 - P1.0 as a sngle nibble
+                      11     ; Returns the nibble in lower 4 bits of the register A
+                      12     ;
+                      13     ; Ensure that the internal port latches are set high already 
+                      14     ; prior to calling this routine
+                      15     ;=========================================
+                      16     
+0003 E590             17             MOV A,P1                        ; read port lines P1.3 - P1.0 where slide switches 
+                             are connected
+0005 540F             18             ANL A,#0FH                      ; retain lower nibble and mask off upper one
+                      19     
+0007 22               20             RET                                     ; Return to caller with nibble in A
+                      21     
+                      22               
+                      23     
+                      24                     
+                      25     ;=========================================
+                      26     
+0008                  27     zeroOut: ;make all the memory locations zero
+                      28             USING 0
+0008 C0D0             29             PUSH PSW  ;to make sure valuse of registers are stored somewhere 
+000A C001             30             PUSH AR1
+000C C002             31             PUSH AR2
+                      32             
+000E AA50             33             MOV R2, 50H  ;No. of elements
+0010 A951             34             MOV R1, 51H  ;location of first element
+                      35             
+0012                  36             WRITE:                   ;functional loop for putting all zeroes in the given range
+0012 7700             37                     MOV @R1, #0
+0014 09               38                     INC R1
+0015 DAFB             39                     DJNZ R2, WRITE
+                      40             
+0017 D002             41             POP AR2 ;restoring all values of registers
+0019 D001             42             POP AR1
+001B D0D0             43             POP PSW
+001D 22               44             RET
+                      45     ;=========================================
+                      46     
+                      47     
+001E                  48     main:
+                      49     ;=========================================
+                      50             ; Port initialisation
+001E 75900F           51             MOV P1,#0Fh                     ; Setup internal latch for P1.3 - P1.0 high     so 
+                             slide switches can be read
+                      52     
+                      53             ; read nibble from port
+0021 120003           54             LCALL readNibble                ; read nibble using subroutine
+                      55             
+A51 MACRO ASSEMBLER  PRELAB_ZEROOUT                                                       08/09/2015 14:17:36 PAGE     2
+
+0024 C4               56             SWAP A                                  ;P1.4 to P1.7 = P1.0 to P1.3 (read from rea
+                             dNibble)
+0025 F590             57             MOV P1, A                               ;
+                      58             
+0027 F550             59             MOV 50H,A                               ; save nibble read in location 50H
+                      60             
+0029 755153           61             MOV 51H, #53H   ;location of first element
+002C 755320           62             MOV 53H, #20H   ;arbitrary values put in different locations
+002F 755443           63             MOV 54H, #43H   ;-----//-----
+0032 756232           64             MOV 62H, #32H   ;-----//-----
+                      65             
+0035 120008           66             LCALL zeroOut
+                      67     
+                      68             ; end of job
+0038 80FE             69             STOP: JMP STOP          
+                      70     
+                      71     ;=========================================
+                      72     ; End of program file
+                      73     END
+                             
+                             
+                             
+                             
+A51 MACRO ASSEMBLER  PRELAB_ZEROOUT                                                       08/09/2015 14:17:36 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+AR1. . . . . . . .  D ADDR   0001H   A   
+AR2. . . . . . . .  D ADDR   0002H   A   
+MAIN . . . . . . .  C ADDR   001EH   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+PSW. . . . . . . .  D ADDR   00D0H   A   
+READNIBBLE . . . .  C ADDR   0003H   A   
+STOP . . . . . . .  C ADDR   0038H   A   
+WRITE. . . . . . .  C ADDR   0012H   A   
+ZEROOUT. . . . . .  C ADDR   0008H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

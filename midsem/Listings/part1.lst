@@ -1,0 +1,13 @@
+C51 COMPILER V9.54   PART1                                                                 10/10/2015 12:46:28 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE PART1
+OBJECT MODULE PLACED IN .\Objects\part1.obj
+COMPILER INVOKED BY: D:\Programmes\Programmes\C51\BIN\C51.EXE part1.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(
+                    -.\Listings\part1.lst) TABS(2) OBJECT(.\Objects\part1.obj)
+
+line level    source
+
+*** ERROR C318 OF part1.c: can't open file 'part1.c'
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  1 ERROR(S)

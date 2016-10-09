@@ -1,0 +1,44 @@
+A51 MACRO ASSEMBLER  PRELAB2                                                              07/28/2015 14:37:46 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02c
+OBJECT MODULE PLACED IN .\Objects\prelab2.obj
+ASSEMBLER INVOKED BY: D:\Programmes\Programmes\C51\BIN\A51.EXE prelab2.asm SET(SMALL) DEBUG PRINT(.\Listings\prelab2.lst
+                      ) OBJECT(.\Objects\prelab2.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     ORG 00H
+0000 02000A            2     LJMP MAIN
+                       3     
+0003                   4     ADDITION:
+0003 29                5             ADD A,R1
+0004 F6                6             MOV @R0,A
+0005 08                7             INC R0
+0006 09                8             INC R1
+0007 DAFA              9             DJNZ R2,ADDITION
+0009 22               10     RET
+                      11     
+000A                  12     MAIN:
+000A 7400             13             MOV A,#00H
+000C 7851             14             MOV R0,#51H
+000E 7901             15             MOV R1,#01H
+0010 7A05             16             MOV R2,#05H
+0012 120003           17             LCALL ADDITION  
+                      18     END
+A51 MACRO ASSEMBLER  PRELAB2                                                              07/28/2015 14:37:46 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ADDITION . . . . .  C ADDR   0003H   A   
+MAIN . . . . . . .  C ADDR   000AH   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

@@ -1,0 +1,138 @@
+A51 MACRO ASSEMBLER  PRELAB_DISPLAY                                                       08/09/2015 12:02:39 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02c
+OBJECT MODULE PLACED IN .\Objects\prelab_display.obj
+ASSEMBLER INVOKED BY: D:\Programmes\Programmes\C51\BIN\A51.EXE prelab_display.asm SET(SMALL) DEBUG PRINT(.\Listings\prel
+                      ab_display.lst) OBJECT(.\Objects\prelab_display.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;---------------------------------------------------------------
+                       2     ;TITLE: PRELAB2
+                       3     ;AUTHOR : KALPESH PATIL (130040019)
+                       4     ;---------------------------------------------------------------
+                       5     
+  0090                 6             LED EQU P1
+                       7     
+0000                   8             ORG 00H
+0000 0200A9            9             LJMP MAIN
+                      10     
+0050                  11             ORG 50H
+                      12             
+0050                  13     sequence:
+                      14             USING 0
+0050 C0D0             15             PUSH PSW ;to make sure valuse of registers are stored somewhere 
+0052 C001             16             PUSH AR1
+0054 C002             17             PUSH AR2
+                      18             
+0056 AA50             19             MOV R2, 50H ;number of elements
+0058 A951             20             MOV R1, 51H     ;first element
+                      21             
+005A                  22             WRITE:  ;will wirte decreasing sequence N,N-1,N-2...2,1 from first element
+005A EA               23             MOV A, R2
+005B F7               24             MOV @R1, A
+005C 09               25             INC R1
+005D DAFB             26             DJNZ R2, WRITE
+                      27             
+005F D002             28             POP AR2 ;restoring values of registers
+0061 D001             29             POP AR1
+0063 D0D0             30             POP PSW
+0065 22               31             RET
+                      32     
+0066                  33     DELAY:
+                      34             USING 0
+0066 C0D0             35             PUSH PSW ;to make sure valuse of registers are stored somewhere 
+0068 C001             36             PUSH AR1
+006A C002             37             PUSH AR2
+006C C003             38             PUSH AR3
+006E C0F0             39             PUSH B
+0070 E54F             40             MOV A, 4FH      ;location of D
+0072 75F00A           41             MOV B, #10      
+0075 A4               42             MUL AB;      No. of times 50ms blocks to be executed to generate D/2 sec delay
+0076 FB               43             MOV R3, A
+                      44             
+0077                  45             BACK2:                                  ;upper loop running 10*D times
+0077 7AC8             46             MOV R2,#200            
+0079                  47             BACK1:                                  ;inner loop of 50ms delay
+0079 79FF             48                     MOV R1,#0FFH
+007B                  49                     BACK :                          ;inner to inner loop
+007B D9FE             50                             DJNZ R1, BACK
+007D DAFA             51                     DJNZ R2, BACK1
+007F DBF6             52             DJNZ R3, BACK2
+                      53             
+                      54             
+0081 D0F0             55             POP B           ;restoring all values
+0083 D003             56             POP AR3
+0085 D002             57             POP AR2
+A51 MACRO ASSEMBLER  PRELAB_DISPLAY                                                       08/09/2015 12:02:39 PAGE     2
+
+0087 D001             58             POP AR1
+0089 D0D0             59             POP PSW 
+008B 22               60             RET
+                      61             
+                      62             
+                      63     
+                      64     
+008C                  65     Display:
+                      66             USING 0
+008C C0D0             67             PUSH PSW        ;to make sure valuse of registers are stored somewhere 
+008E C001             68             PUSH AR1
+0090 C002             69             PUSH AR2
+                      70             
+0092 A951             71             MOV R1, 51H ;location of first element of array
+0094 AA50             72             MOV R2, 50H     ;no. of elements
+                      73             
+0096                  74             FOR:            ;loop iterating through the array
+0096 E7               75                     MOV A,@R1
+0097 540F             76                     ANL A,#0FH      ;getting last 4 bits of the number by ANDing with 00001111
+0099 C4               77                     SWAP A          ;swaping bytes of the number
+009A F590             78                     MOV LED, A      ;putting the number XYZW0000 on the port
+009C 120066           79                     LCALL DELAY     ;delay function
+009F 09               80                     INC R1          ;iterative variable
+00A0 DAF4             81                     DJNZ R2, FOR
+                      82             
+00A2 D002             83             POP AR2                 ;restoring registers values
+00A4 D001             84             POP AR1
+00A6 D0D0             85             POP PSW 
+00A8 22               86             RET
+                      87     
+                      88     
+00A9                  89     MAIN:
+00A9 755005           90             MOV 50H, #5                     ;No of elements
+00AC 755160           91             MOV 51H, #60H           ;location of first element of array
+00AF 754F02           92             MOV 4FH, #2                     ;delay seconds
+00B2 120050           93             LCALL sequence      ;sequence genearator for displaying on LED
+00B5 12008C           94             LCALL Display           ;displaying on LED
+                      95             
+                      96     END
+A51 MACRO ASSEMBLER  PRELAB_DISPLAY                                                       08/09/2015 12:02:39 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+AR1. . . . . . . .  D ADDR   0001H   A   
+AR2. . . . . . . .  D ADDR   0002H   A   
+AR3. . . . . . . .  D ADDR   0003H   A   
+B. . . . . . . . .  D ADDR   00F0H   A   
+BACK . . . . . . .  C ADDR   007BH   A   
+BACK1. . . . . . .  C ADDR   0079H   A   
+BACK2. . . . . . .  C ADDR   0077H   A   
+DELAY. . . . . . .  C ADDR   0066H   A   
+DISPLAY. . . . . .  C ADDR   008CH   A   
+FOR. . . . . . . .  C ADDR   0096H   A   
+LED. . . . . . . .  D ADDR   0090H   A   
+MAIN . . . . . . .  C ADDR   00A9H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+PSW. . . . . . . .  D ADDR   00D0H   A   
+SEQUENCE . . . . .  C ADDR   0050H   A   
+WRITE. . . . . . .  C ADDR   005AH   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

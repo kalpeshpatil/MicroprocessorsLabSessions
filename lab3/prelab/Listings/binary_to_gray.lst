@@ -1,0 +1,87 @@
+A51 MACRO ASSEMBLER  BINARY_TO_GRAY                                                       08/11/2015 14:50:35 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02c
+OBJECT MODULE PLACED IN .\Objects\binary_to_gray.obj
+ASSEMBLER INVOKED BY: D:\Programmes\Programmes\C51\BIN\A51.EXE ..\labwork\binary_to_gray.asm SET(SMALL) DEBUG PRINT(.\Li
+                      stings\binary_to_gray.lst) OBJECT(.\Objects\binary_to_gray.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     
+                       2     ; Setup code at reset vector of 8051 to jump to our main task 
+0000                   3     org 0
+                       4     USING 0
+0000 02001D            5     ljmp main               
+                       6     
+                       7     
+                       8     ;=========================================
+0003                   9     readNibble:
+                      10     ;=========================================
+                      11     ; Routine to read in Port lines P1.3 - P1.0 as a sngle nibble
+                      12     ; Returns the nibble in lower 4 bits of the register A
+                      13     ;
+                      14     ; Ensure that the internal port latches are set high already 
+                      15     ; prior to calling this routine
+                      16     ;=========================================
+                      17     
+0003 E590             18             MOV A,P1                        ; read port lines P1.3 - P1.0 where slide switches 
+                             are connected
+0005 540F             19             ANL A,#0FH                      ; retain lower nibble and mask off upper one
+                      20     
+0007 22               21             RET                                     ; Return to caller with nibble in A
+                      22     
+                      23               
+                      24     
+                      25                     
+                      26     ;=========================================
+                      27     
+0008                  28     binaryToGray:
+0008 C0D0             29             PUSH PSW
+000A C001             30             PUSH AR1
+000C C3               31             CLR C
+000D 120003           32             LCALL readNibble
+                      33             ;MOV A, 52H
+0010 F9               34             MOV R1, A                       ;R1 = 0000abcd
+0011 13               35             RRC A                           ;A =  00000abc
+0012 69               36             XRL A,R1                                ;A =  1111a(abc^bcd)
+0013 540F             37             ANL A,#0FH                      ;A =  0000a(abc^bcd)
+0015 C4               38             SWAP A
+0016 F590             39             MOV P1, A
+0018 D001             40             POP AR1
+001A D0D0             41             POP PSW
+001C 22               42             RET
+                      43     
+                      44     ;============================================
+                      45     
+001D                  46     main:
+                      47             ; Port initialisation
+001D 75900F           48             MOV P1,#0Fh                     ; Setup internal latch for P1.3 - P1.0 high     so 
+                             slide switches can be read
+0020                  49             loop:
+0020 120008           50                     LCALL binaryToGray
+0023 02001D           51             LJMP main
+0026 80FE             52             fin: sjmp fin
+                      53     end
+A51 MACRO ASSEMBLER  BINARY_TO_GRAY                                                       08/11/2015 14:50:35 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+AR1. . . . . . . .  D ADDR   0001H   A   
+BINARYTOGRAY . . .  C ADDR   0008H   A   
+FIN. . . . . . . .  C ADDR   0026H   A   
+LOOP . . . . . . .  C ADDR   0020H   A   
+MAIN . . . . . . .  C ADDR   001DH   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+PSW. . . . . . . .  D ADDR   00D0H   A   
+READNIBBLE . . . .  C ADDR   0003H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

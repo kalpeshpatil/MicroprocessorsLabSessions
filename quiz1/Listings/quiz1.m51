@@ -1,0 +1,104 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        08/22/2015  11:55:02  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+D:\PROGRAMMES\PROGRAMMES\C51\BIN\BL51.EXE .\Objects\matrixMultiplication.obj TO .\Objects\quiz1 PRINT (.\Listings\quiz1.
+>> m51) RAMSIZE (256)
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\matrixMultiplication.obj (MATRIXMULTIPLICATION)
+
+
+LINK MAP OF MODULE:  .\Objects\quiz1 (MATRIXMULTIPLICATION)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     00B6H     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\quiz1 (MATRIXMULTIPLICATION)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        MATRIXMULTIPLICATION
+  D:00F0H         SYMBOL        B
+  C:0054H         SYMBOL        FIRST_TERM
+  C:0084H         SYMBOL        FOURTH_TERM
+  C:0099H         SYMBOL        MAIN
+  C:0050H         SYMBOL        MATRIXMULT
+  D:00D0H         SYMBOL        PSW
+  C:0064H         SYMBOL        SECOND_TERM
+  C:00B4H         SYMBOL        STOP
+  C:0074H         SYMBOL        THIRD_TERM
+  C:0000H         LINE#         6
+  C:0050H         LINE#         11
+  C:0052H         LINE#         12
+  C:0054H         LINE#         15
+  C:0056H         LINE#         16
+  C:0059H         LINE#         17
+  C:005AH         LINE#         18
+  C:005BH         LINE#         19
+  C:005DH         LINE#         20
+  C:0060H         LINE#         21
+  C:0061H         LINE#         22
+  C:0062H         LINE#         23
+  C:0064H         LINE#         27
+  C:0066H         LINE#         28
+  C:0069H         LINE#         29
+  C:006AH         LINE#         30
+  C:006BH         LINE#         31
+  C:006DH         LINE#         32
+  C:0070H         LINE#         33
+  C:0071H         LINE#         34
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/22/2015  11:55:02  PAGE 2
+
+
+  C:0072H         LINE#         35
+  C:0074H         LINE#         38
+  C:0076H         LINE#         39
+  C:0079H         LINE#         40
+  C:007AH         LINE#         41
+  C:007BH         LINE#         42
+  C:007DH         LINE#         43
+  C:0080H         LINE#         44
+  C:0081H         LINE#         45
+  C:0082H         LINE#         46
+  C:0084H         LINE#         49
+  C:0086H         LINE#         50
+  C:0089H         LINE#         51
+  C:008AH         LINE#         52
+  C:008BH         LINE#         53
+  C:008DH         LINE#         54
+  C:0090H         LINE#         55
+  C:0091H         LINE#         56
+  C:0092H         LINE#         57
+  C:0094H         LINE#         59
+  C:0096H         LINE#         60
+  C:0098H         LINE#         62
+  C:0099H         LINE#         65
+  C:009CH         LINE#         66
+  C:009FH         LINE#         67
+  C:00A2H         LINE#         68
+  C:00A5H         LINE#         70
+  C:00A8H         LINE#         71
+  C:00ABH         LINE#         72
+  C:00AEH         LINE#         73
+  C:00B1H         LINE#         75
+  C:00B4H         LINE#         77
+  -------         ENDMOD        MATRIXMULTIPLICATION
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0069H BYTE ( 5%) *
+******************************************************************************
+
+Program Size: data=8.0 xdata=0 code=182
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,109 @@
+A51 MACRO ASSEMBLER  LAB5_1                                                               08/25/2015 15:47:00 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02c
+OBJECT MODULE PLACED IN .\Objects\lab5_1.obj
+ASSEMBLER INVOKED BY: D:\Programmes\Programmes\C51\BIN\A51.EXE lab5_1.asm SET(SMALL) DEBUG PRINT(.\Listings\lab5_1.lst) 
+                      OBJECT(.\Objects\lab5_1.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;lab5_1
+                       2     ;Kalpesh Patil (130040019)
+                       3     
+0000                   4     org 00h
+0000 020500            5     ljmp main
+                       6     
+000B                   7     org 00Bh
+000B C28D              8             clr tf0
+000D C28C              9             clr tr0
+000F 32               10             reti
+                      11     
+                      12     using 0
+                      13     
+0010                  14     timer_delay:
+0010 C0D0             15             push psw
+0012 C000             16             push ar0
+0014 C001             17             push ar1
+0016 C002             18             push ar2
+                      19             
+0018 C3               20             clr c
+0019 7891             21             mov r0, #91h
+001B 7992             22             mov r1, #92h
+001D E591             23             mov a, 91h
+001F FB               24             mov r3,a
+0020 7400             25             mov a, #0
+0022 9B               26             subb a, r3
+0023 FB               27             mov r3, a
+0024 E592             28             mov a, 92h
+0026 FC               29             mov r4, a
+0027 7400             30             mov a,#0
+0029 9C               31             subb a, r4
+002A FC               32             mov r4, a
+                      33             
+002B 8C8C             34             mov TH0, r4
+002D 8B8A             35             mov TL0, r3
+                      36             
+002F D002             37             pop ar2
+0031 D001             38             pop ar1
+0033 D000             39             pop ar0
+0035 D0D0             40             pop psw
+                      41     
+0037 22               42     ret
+                      43     
+0038                  44     timer_init:
+                      45     
+0038 D2AF             46             setb EA
+003A D2A9             47             setb ET0
+003C 758901           48             mov TMOD, #01h
+003F 22               49             ret
+                      50     
+                      51     
+0040                  52     start_timer:
+0040 D28C             53             setb tr0
+0042 22               54             ret
+                      55     
+0500                  56     org 500h
+0500                  57     main:
+A51 MACRO ASSEMBLER  LAB5_1                                                               08/25/2015 15:47:00 PAGE     2
+
+                      58             ;mov a , #01h
+0500 75910F           59             mov 91h , #015
+0503 759200           60             mov 92h,  #00
+0506 120038           61             lcall timer_init
+0509 120010           62             lcall timer_delay
+050C 120040           63             lcall start_timer
+                      64         
+050F 80FE             65             fin: sjmp fin
+                      66     
+                      67     end
+A51 MACRO ASSEMBLER  LAB5_1                                                               08/25/2015 15:47:00 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+AR0. . . . . . . .  D ADDR   0000H   A   
+AR1. . . . . . . .  D ADDR   0001H   A   
+AR2. . . . . . . .  D ADDR   0002H   A   
+EA . . . . . . . .  B ADDR   00A8H.7 A   
+ET0. . . . . . . .  B ADDR   00A8H.1 A   
+FIN. . . . . . . .  C ADDR   050FH   A   
+MAIN . . . . . . .  C ADDR   0500H   A   
+PSW. . . . . . . .  D ADDR   00D0H   A   
+START_TIMER. . . .  C ADDR   0040H   A   
+TF0. . . . . . . .  B ADDR   0088H.5 A   
+TH0. . . . . . . .  D ADDR   008CH   A   
+TIMER_DELAY. . . .  C ADDR   0010H   A   
+TIMER_INIT . . . .  C ADDR   0038H   A   
+TL0. . . . . . . .  D ADDR   008AH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR0. . . . . . . .  B ADDR   0088H.4 A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

@@ -1,0 +1,80 @@
+A51 MACRO ASSEMBLER  BIN_ASCII                                                            08/16/2015 05:24:41 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02c
+OBJECT MODULE PLACED IN .\Objects\bin_ascii.obj
+ASSEMBLER INVOKED BY: D:\Programmes\Programmes\C51\BIN\A51.EXE ..\bin_ascii.asm SET(SMALL) DEBUG PRINT(.\Listings\bin_as
+                      cii.lst) OBJECT(.\Objects\bin_ascii.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;--------------------PROGRAM TO FIND ASCII OF BYTE WHERE HIGHER ;NIBBLE IS IN A AND LOWER N
+                             IBBLE IS IN B----------------- ;--------------------------------------------
+0000                   2     ORG 0
+0000 020400            3     LJMP MAIN
+                       4     
+                       5     ;---------------SUBROUTINE TO CONVERT BYTE TO ASCII----------------------------------------
+                             -----
+0200                   6     ORG 200h
+0200 FA                7     ASCIICONV: MOV R2,A
+0201 540F              8     ANL A,#0Fh
+0203 FB                9     MOV R3,A
+0204 9409             10     SUBB A,#09h  ;CHECK IF NIBBLE IS DIGIT OR ALPHABET
+0206 5007             11     JNC ALPHA
+                      12     
+0208 EB               13     MOV A,R3
+0209 2430             14     ADD A,#30h   ;ADD 30H TO CONV HEX TO ASCII
+020B F5F0             15     MOV B,A
+020D 8005             16     JMP NEXT
+                      17     
+020F EB               18     ALPHA: MOV A,R3  ;ADD 37H TO CONVERT ALPHABET TO ASCII
+0210 2437             19     ADD A,#37h
+0212 F5F0             20     MOV B,A
+                      21     
+0214 EA               22     NEXT:MOV A,R2
+0215 54F0             23     ANL A,#0F0h          ;CHECK HIGHER NIBBLE IS DIGIT OR ALPHABET
+0217 C4               24     SWAP A
+0218 FB               25     MOV R3,A
+0219 9409             26     SUBB A,#09h
+021B 5004             27     JNC ALPHA2 
+                      28     
+021D EB               29     MOV A,R3                        ;DIGIT TO ASCII
+021E 2430             30     ADD A,#30h
+0220 22               31     RET
+                      32     
+0221 EB               33     ALPHA2:MOV A,R3
+0222 2437             34     ADD A,#37h          ;ALPHABET TO ASCII
+0224 22               35     RET
+                      36     
+                      37     
+                      38     ;------------------MAIN PROGRAM------------------------------------------------------------
+                             ---------------------------
+0400                  39     ORG 400h
+0400                  40     MAIN: ;MOV A,#0ffh
+0400 E560             41     mov a, 60h
+0402 120200           42     LCALL ASCIICONV
+0405 80F9             43     sjmp main
+0407 80FE             44     HERE:SJMP HERE
+                      45     END
+                             
+A51 MACRO ASSEMBLER  BIN_ASCII                                                            08/16/2015 05:24:41 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ALPHA. . . . . . .  C ADDR   020FH   A   
+ALPHA2 . . . . . .  C ADDR   0221H   A   
+ASCIICONV. . . . .  C ADDR   0200H   A   
+B. . . . . . . . .  D ADDR   00F0H   A   
+HERE . . . . . . .  C ADDR   0407H   A   
+MAIN . . . . . . .  C ADDR   0400H   A   
+NEXT . . . . . . .  C ADDR   0214H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

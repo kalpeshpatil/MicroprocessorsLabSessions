@@ -1,0 +1,119 @@
+A51 MACRO ASSEMBLER  MATRIXMULTIPLICATION                                                 08/22/2015 11:52:57 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02c
+OBJECT MODULE PLACED IN .\Objects\matrixMultiplication.obj
+ASSEMBLER INVOKED BY: D:\Programmes\Programmes\C51\BIN\A51.EXE matrixMultiplication.asm SET(SMALL) DEBUG PRINT(.\Listing
+                      s\matrixMultiplication.lst) OBJECT(.\Objects\matrixMultiplication.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;---------------------------------------------------------------
+                       2     ;TITLE: matrix multiplication
+                       3     ;AUTHOR : KALPESH PATIL (130040019)
+                       4     ;---------------------------------------------------------------
+0000                   5             ORG 00H
+0000 020099            6             LJMP MAIN
+                       7     
+0050                   8             ORG 50H
+                       9             using 0
+0050                  10     matrixMult:
+0050 C0D0             11             push psw                        ;pushing registers on stack
+0052 C002             12             push ar2
+                      13             
+0054                  14             first_term:                     ;compute first term = x11*y11 + x12*y21
+0054 E550             15                     mov a, 50h
+0056 8555F0           16                     mov b, 55h
+0059 A4               17                     mul ab                  ;x11*y11
+005A FA               18                     mov r2, a
+005B E551             19                     mov a, 51h
+005D 8557F0           20                     mov b, 57h
+0060 A4               21                     mul ab                  ;x12*y21
+0061 2A               22                     add a, r2
+0062 F560             23                     mov 60h, a
+                      24                     
+                      25             
+0064                  26             second_term:            ;compute first term = x11*y12 + x12*y22
+0064 E550             27                     mov a, 50h
+0066 8556F0           28                     mov b, 56h 
+0069 A4               29                     mul ab                  ;x11*y12
+006A FA               30                     mov r2, a
+006B E551             31                     mov a, 51h
+006D 8558F0           32                     mov b, 58h
+0070 A4               33                     mul ab                  ;x12*y22
+0071 2A               34                     add a, r2
+0072 F561             35                     mov 61h, a
+                      36             
+0074                  37             third_term:                     ;compute first term = x21*y11 + x22*y21
+0074 E552             38                     mov a, 52h
+0076 8555F0           39                     mov b, 55h 
+0079 A4               40                     mul ab                  ;x21*y11
+007A FA               41                     mov r2, a
+007B E553             42                     mov a, 53h
+007D 8557F0           43                     mov b, 57h
+0080 A4               44                     mul ab                  ;x22*y21
+0081 2A               45                     add a, r2
+0082 F562             46                     mov 62h,a
+                      47             
+0084                  48             fourth_term:            ;compute first term = x21*y12 + x22*y22
+0084 E552             49                     mov a, 52h
+0086 8556F0           50                     mov b, 56h 
+0089 A4               51                     mul ab                  ;x21*y12
+008A FA               52                     mov r2, a
+008B E553             53                     mov a, 53h
+008D 8558F0           54                     mov b, 58h
+0090 A4               55                     mul ab                  ;x22*y22
+0091 2A               56                     add a, r2
+0092 F563             57                     mov 63h,a
+A51 MACRO ASSEMBLER  MATRIXMULTIPLICATION                                                 08/22/2015 11:52:57 PAGE     2
+
+                      58                     
+0094 D002             59             pop ar2                         ;restoring registers from stack
+0096 D0D0             60             pop psw
+                      61             
+0098 22               62             ret
+                      63             
+0099                  64             main:
+0099 755001           65                     mov 50h, #1
+009C 755101           66                     mov 51h, #1
+009F 755201           67                     mov 52h, #1
+00A2 755301           68                     mov 53h, #1
+                      69                     
+00A5 755501           70                     mov 55h, #1
+00A8 755601           71                     mov 56h, #1
+00AB 755701           72                     mov 57h, #1
+00AE 755801           73                     mov 58h, #1
+                      74             
+00B1 120050           75                     lcall matrixMult                ;multiply given 2*2 matrices and store resu
+                             lt
+                      76                     
+00B4 80FE             77                     stop:sjmp stop
+                      78             
+                      79             end
+                             
+                                     
+                                     
+A51 MACRO ASSEMBLER  MATRIXMULTIPLICATION                                                 08/22/2015 11:52:57 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+AR2. . . . . . . .  D ADDR   0002H   A   
+B. . . . . . . . .  D ADDR   00F0H   A   
+FIRST_TERM . . . .  C ADDR   0054H   A   
+FOURTH_TERM. . . .  C ADDR   0084H   A   
+MAIN . . . . . . .  C ADDR   0099H   A   
+MATRIXMULT . . . .  C ADDR   0050H   A   
+PSW. . . . . . . .  D ADDR   00D0H   A   
+SECOND_TERM. . . .  C ADDR   0064H   A   
+STOP . . . . . . .  C ADDR   00B4H   A   
+THIRD_TERM . . . .  C ADDR   0074H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

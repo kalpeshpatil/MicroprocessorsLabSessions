@@ -1,0 +1,50 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        07/28/2015  14:41:00  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+D:\PROGRAMMES\PROGRAMMES\C51\BIN\BL51.EXE .\Objects\prelab.obj TO .\Objects\prelab PRINT (.\Listings\prelab.m51) RAMSIZE
+>>  (256)
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\prelab.obj (PRELAB)
+
+
+LINK MAP OF MODULE:  .\Objects\prelab (PRELAB)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0013H     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\prelab (PRELAB)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        PRELAB
+  C:0003H         SYMBOL        ADDITION
+  C:000AH         SYMBOL        MAIN
+  C:0000H         LINE#         3
+  C:0003H         LINE#         6
+  C:0005H         LINE#         7
+  C:0007H         LINE#         8
+  C:0009H         LINE#         9
+  C:000AH         LINE#         12
+  C:000DH         LINE#         13
+  C:0010H         LINE#         14
+  -------         ENDMOD        PRELAB
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0013H BYTE ( 0%) *
+******************************************************************************
+
+Program Size: data=8.0 xdata=0 code=19
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,182 @@
+A51 MACRO ASSEMBLER  PACKNIBBLE                                                           08/11/2015 16:34:52 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02c
+OBJECT MODULE PLACED IN .\Objects\packNibble.obj
+ASSEMBLER INVOKED BY: D:\Programmes\Programmes\C51\BIN\A51.EXE ..\labwork\packNibble.asm SET(SMALL) DEBUG PRINT(.\Listin
+                      gs\packNibble.lst) OBJECT(.\Objects\packNibble.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     org 0
+                       2     USING 0
+0000 0200A1            3     ljmp main
+                       4     
+0003                   5     DELAY:
+                       6             USING 0
+0003 C0D0              7             PUSH PSW        ;to make sure valuse of registers are stored somewhere 
+0005 C001              8             PUSH AR1
+0007 C002              9             PUSH AR2
+0009 C003             10             PUSH AR3
+000B C0F0             11             PUSH B
+000D E54F             12             MOV A, 4FH      ; D
+000F 75F00A           13             MOV B, #10      
+0012 A4               14             MUL AB          ;No. of times 50ms blocks to be executed to generate D/2 sec delay
+0013 FB               15             MOV R3, A
+                      16             
+0014                  17             BACK2:                                  ;upper loop running 10*D times
+0014 7AC8             18             MOV R2,#200                             
+0016                  19             BACK1:                                  ;inner loop of 50ms delay
+0016 79FF             20                     MOV R1,#0FFH
+0018                  21                     BACK :                          ;inner to inner loop
+0018 D9FE             22                             DJNZ R1, BACK
+001A DAFA             23                     DJNZ R2, BACK1
+001C DBF6             24             DJNZ R3, BACK2
+                      25             
+                      26             
+001E D0F0             27             POP B           ;restoring values of the registers
+0020 D003             28             POP AR3
+0022 D002             29             POP AR2
+0024 D001             30             POP AR1
+0026 D0D0             31             POP PSW 
+0028 22               32             RET
+                      33     
+                      34     
+0029                  35     readNibble:
+                      36     ; Routine to read a nibble and confirm from user
+                      37     ; First configure switches as input and LED's as Output.
+                      38     ; To configure port as Output clear it
+                      39     ; To configure port as input, set it.
+                      40     ; Logic to read a 4 bit number (nibble) and get confirmation from user
+0029 C0D0             41             push psw
+                      42             
+002B C001             43             push AR1
+                      44             
+                      45             
+                      46     ; Routine to read a nibble and confirm from user
+                      47     ; First configure switches as input and LED's as Output.
+                      48     ; To configure port as Output clear it
+                      49     ; To configure port as input, set it.
+                      50     ; Logic to read a 4 bit number (nibble) and get confirmation from user
+                      51             
+002D                  52     loop:
+002D 7590FF           53             MOV P1,#0FFH ;turn on all 4 leds (routine is ready to accept input)
+0030 754F0A           54             MOV 4FH,#10
+0033 120003           55             LCALL Delay ;wait for 5 sec during which user can give input through switches
+0036 75900F           56             MOV P1,#0FH;turn off all LEDS
+0039 E590             57             MOV A, P1;read the input from switches (nibble)
+A51 MACRO ASSEMBLER  PACKNIBBLE                                                           08/11/2015 16:34:52 PAGE     2
+
+003B 540F             58             ANL A, #0FH
+003D F9               59             MOV R1, A
+003E F6               60             MOV @R0, A
+003F 754F02           61             MOV 4FH, #2;wait for one sec
+0042 120003           62             LCALL Delay
+0045 759000           63             MOV P1, #00H
+0048 E9               64             MOV A, R1
+0049 C4               65             SWAP A
+004A F590             66             MOV P1, A;show the read value on LEDs
+004C 754F0A           67             MOV 4FH, #10
+004F 120003           68             LCALL Delay
+                      69     ;wait for 5 sec ( during this time delay User can put all switches to OFF
+                      70     ;position to signal that the read value is correct and routine can proceed to
+                      71     ;next step)
+                      72     ;clear leds
+0052 75900F           73             MOV P1, #0FH;read the input from switches
+0055 E590             74             MOV A, P1
+                      75             
+0057 540F             76             ANL A, #0FH
+0059 70D2             77             JNZ loop
+005B D001             78             POP AR1
+                      79             
+005D D0D0             80             POP PSW
+005F 22               81             RET ;if read value <> 0Fh go to loop
+                      82     ; return to caller with previously read nibble in location 4EH (lower 4 bits).
+                      83      
+                      84     
+0060                  85     packNibble:
+0060 C0D0             86             push psw
+0062 C000             87             push AR0
+0064 C001             88             push AR1
+0066 C002             89             push AR2
+                      90             
+0068 783E             91             MOV R0, #3EH
+006A 120029           92             LCALL readNibble
+006D E6               93             MOV A, @R0
+006E F9               94             MOV R1, A
+006F 08               95             INC R0
+0070 120029           96             LCALL readNibble
+0073 E6               97             MOV A, @R0
+0074 FA               98             MOV R2,A
+0075 E9               99             MOV A, R1
+0076 C4              100             SWAP A
+0077 2A              101             ADD A, R2
+0078 F54F            102             MOV 4FH, A
+007A D002            103             pop AR2
+007C D001            104             POP AR1
+007E D000            105             pop AR0
+0080 D0D0            106             pop psw
+0082 22              107             RET
+                     108             
+0083                 109     readValue:
+0083 C0D0            110             push psw
+0085 C000            111             push AR0
+0087 C001            112             push AR1
+0089 C002            113             push AR2
+008B AA50            114             MOV R2, 50h
+008D A951            115             MOV R1, 51H
+008F                 116             looper:
+008F 120060          117             LCALL packNibble
+0092 E54F            118             MOV A, 4FH
+0094 F7              119             MOV @R1, A
+0095 09              120             INC R1
+0096 DAF7            121             DJNZ R2,looper
+0098 D002            122             POP AR2
+009A D001            123             pop AR1
+A51 MACRO ASSEMBLER  PACKNIBBLE                                                           08/11/2015 16:34:52 PAGE     3
+
+009C D000            124             POP AR0
+009E D0D0            125             pop psw
+00A0 22              126             RET
+                     127             
+                     128             
+                     129             
+00A1                 130     MAIN:
+00A1 755002          131             MOV 50H, #2
+00A4 755152          132             MOV 51H, #52H
+00A7 120083          133             LCALL readValue
+00AA 80FE            134             here: sjmp here
+                     135     
+                     136     END
+A51 MACRO ASSEMBLER  PACKNIBBLE                                                           08/11/2015 16:34:52 PAGE     4
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+AR0. . . . . . . .  D ADDR   0000H   A   
+AR1. . . . . . . .  D ADDR   0001H   A   
+AR2. . . . . . . .  D ADDR   0002H   A   
+AR3. . . . . . . .  D ADDR   0003H   A   
+B. . . . . . . . .  D ADDR   00F0H   A   
+BACK . . . . . . .  C ADDR   0018H   A   
+BACK1. . . . . . .  C ADDR   0016H   A   
+BACK2. . . . . . .  C ADDR   0014H   A   
+DELAY. . . . . . .  C ADDR   0003H   A   
+HERE . . . . . . .  C ADDR   00AAH   A   
+LOOP . . . . . . .  C ADDR   002DH   A   
+LOOPER . . . . . .  C ADDR   008FH   A   
+MAIN . . . . . . .  C ADDR   00A1H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+PACKNIBBLE . . . .  C ADDR   0060H   A   
+PSW. . . . . . . .  D ADDR   00D0H   A   
+READNIBBLE . . . .  C ADDR   0029H   A   
+READVALUE. . . . .  C ADDR   0083H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

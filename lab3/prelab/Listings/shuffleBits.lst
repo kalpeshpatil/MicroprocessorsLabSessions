@@ -1,0 +1,247 @@
+A51 MACRO ASSEMBLER  SHUFFLEBITS                                                          08/13/2015 15:47:39 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02c
+OBJECT MODULE PLACED IN .\Objects\shuffleBits.obj
+ASSEMBLER INVOKED BY: D:\Programmes\Programmes\C51\BIN\A51.EXE ..\labwork\shuffleBits.asm SET(SMALL) DEBUG PRINT(.\Listi
+                      ngs\shuffleBits.lst) OBJECT(.\Objects\shuffleBits.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     ORG 00H
+0000 020200            2             LJMP MAIN
+0003                   3             DELAY:
+                       4             USING 0
+0003 C0D0              5             PUSH PSW        ;to make sure valuse of registers are stored somewhere 
+0005 C001              6             PUSH AR1
+0007 C002              7             PUSH AR2
+0009 C003              8             PUSH AR3
+000B C0F0              9             PUSH B
+000D E54F             10             MOV A, 4FH      ; D
+000F 75F00A           11             MOV B, #10      
+0012 A4               12             MUL AB          ;No. of times 50ms blocks to be executed to generate D/2 sec delay
+0013 FB               13             MOV R3, A
+                      14             
+0014                  15             BACK2:                                  ;upper loop running 10*D times
+0014 7AC8             16             MOV R2,#200                             
+0016                  17             BACK1:                                  ;inner loop of 50ms delay
+0016 79FF             18                     MOV R1,#0FFH
+0018                  19                     BACK :                          ;inner to inner loop
+0018 D9FE             20                             DJNZ R1, BACK
+001A DAFA             21                     DJNZ R2, BACK1
+001C DBF6             22             DJNZ R3, BACK2
+                      23             
+                      24             
+001E D0F0             25             POP B           ;restoring values of the registers
+0020 D003             26             POP AR3
+0022 D002             27             POP AR2
+0024 D001             28             POP AR1
+0026 D0D0             29             POP PSW 
+0028 22               30             RET
+                      31     
+                      32                     
+0029                  33             readNibble:
+                      34     ; Routine to read a nibble and confirm from user
+                      35     ; First configure switches as input and LED's as Output.
+                      36     ; To configure port as Output clear it
+                      37     ; To configure port as input, set it.
+                      38     ; Logic to read a 4 bit number (nibble) and get confirmation from user
+0029 C0D0             39             push psw
+002B C001             40             push AR1
+                      41             
+                      42             
+                      43     ; Routine to read a nibble and confirm from user
+                      44     ; First configure switches as input and LED's as Output.
+                      45     ; To configure port as Output clear it
+                      46     ; To configure port as input, set it.
+                      47     ; Logic to read a 4 bit number (nibble) and get confirmation from user
+002D                  48     loop:
+002D 7590FF           49             MOV P1,#0FFH ;turn on all 4 leds (routine is ready to accept input)
+0030 754F0A           50             MOV 4FH,#10
+0033 120003           51             LCALL Delay ;wait for 5 sec during which user can give input through switches
+0036 75900F           52             MOV P1,#0FH;turn off all LEDS
+0039 E590             53             MOV A, P1;read the input from switches (nibble)
+003B 540F             54             ANL A, #0FH
+003D F9               55             MOV R1, A
+003E 894E             56             MOV 4EH, R1
+0040 754F02           57             MOV 4FH, #2;wait for one sec
+A51 MACRO ASSEMBLER  SHUFFLEBITS                                                          08/13/2015 15:47:39 PAGE     2
+
+0043 120003           58             LCALL Delay
+0046 759000           59             MOV P1, #00H
+0049 E9               60             MOV A, R1
+004A C4               61             SWAP A
+004B F590             62             MOV P1, A;show the read value on LEDs
+004D 754F0A           63             MOV 4FH, #10
+0050 120003           64             LCALL Delay
+                      65     ;wait for 5 sec ( during this time delay User can put all switches to OFF
+                      66     ;position to signal that the read value is correct and routine can proceed to
+                      67     ;next step)
+                      68     ;clear leds
+0053 75900F           69             MOV P1, #0FH;read the input from switches
+0056 E590             70             MOV A, P1
+                      71             
+0058 540F             72             ANL A, #0FH
+005A 70D1             73             JNZ loop
+005C D001             74             POP AR1
+005E D0D0             75             POP PSW
+0060 22               76             RET ;if read value <> 0Fh go to loop
+                      77     ; return to caller with previously read nibble in location 4EH (lower 4 bits).
+                      78                     
+0061                  79                     MERGER:                 ;TO MERGE TWO NIBBLES INTO 1 BYTE
+0061 C0D0             80                     PUSH PSW
+0063 C000             81                     PUSH AR0
+0065 C001             82                     PUSH AR1
+0067 754E00           83                             MOV 4EH,#00H
+006A 120029           84                             LCALL READNIBBLE
+006D A84E             85                             MOV R0,4EH                      
+006F 120029           86                             LCALL READNIBBLE
+0072 E54E             87                             MOV A,4EH                       
+0074 C4               88                             SWAP A
+0075 48               89                             ORL A,R0
+0076 F54F             90                             MOV 4FH,A
+0078 D001             91                     POP AR1
+007A D000             92                     POP AR0
+007C D0D0             93                     POP PSW
+007E 22               94                     RET
+                      95                     
+007F                  96                     READVALUES:
+007F C0D0             97                     PUSH PSW
+0081 C000             98                     PUSH AR0
+0083 C001             99                     PUSH AR1
+0085 A850            100                     MOV R0,50H
+0087 A951            101                     MOV R1,51H
+0089                 102                     LOOP7:
+0089 120061          103                     LCALL MERGER
+008C A74F            104                     MOV @R1,4FH
+008E 09              105                     INC R1
+008F D8F8            106                     DJNZ R0,LOOP7
+0091 D001            107                     POP AR1
+0093 D000            108                     POP AR0
+0095 D0D0            109                     POP PSW
+0097 22              110                     RET     
+                     111     
+0098                 112     DISPLAY:
+0098 C0D0            113     PUSH PSW
+009A C000            114     PUSH AR0
+009C C001            115     PUSH AR1
+009E A850            116             MOV R0,50H                        ;k
+00A0 75900F          117             MOV P1,#0FH
+                     118     
+00A3 75900F          119             upper_loop:        MOV P1,#0FH
+00A6 754F04          120                             MOV 4FH,#04H
+00A9 120003          121                             LCALL DELAY                
+00AC A951            122                             MOV R1,51H                ;pointer
+00AE E590            123                             MOV A,P1
+A51 MACRO ASSEMBLER  SHUFFLEBITS                                                          08/13/2015 15:47:39 PAGE     3
+
+00B0 FC              124                             MOV R4,A                ;
+00B1 C3              125                             CLR C
+00B2 98              126                             SUBB A,R0               ;check if index is higher than K 
+00B3 5025            127                             JNC STOP                ;switch off all if index is greater
+00B5 EC              128                             MOV A,R4
+00B6 29              129                             ADD A,R1
+00B7 F9              130                             MOV R1,A
+00B8 E7              131                             MOV A,@R1
+00B9 75900F          132                             MOV P1,#0FH
+00BC 54F0            133                             ANL A,#0F0H
+00BE F590            134                             MOV P1,A
+00C0 754F04          135                             MOV 4FH,#04H
+00C3 120003          136                             LCALL DELAY
+00C6 E7              137                             MOV A,@R1               ;d
+00C7 540F            138                             ANL A,#0FH
+00C9 C4              139                             SWAP A
+00CA F590            140                             MOV P1,A
+00CC 754F04          141                             MOV 4FH,#04H
+00CF 120003          142                             LCALL DELAY
+00D2 80CF            143                     SJMP upper_loop
+00D4 D001            144                                     POP AR1
+00D6 D000            145                                     POP AR0
+00D8 D0D0            146                                     POP PSW
+                     147     
+00DA 75900F          148             STOP: MOV P1,#0FH
+00DD 80FB            149                       SJMP STOP
+                     150                                       
+00DF                 151                                       SHUFFLEBITS:
+00DF C0D0            152                                       PUSH PSW
+00E1 C000            153                                       PUSH AR0
+00E3 C001            154                                       PUSH AR1              ;push pop operations
+00E5 C002            155                                       PUSH AR2              
+00E7 A851            156                                       MOV R0,51H    ;
+00E9 A952            157                                       MOV R1,52H
+00EB AA50            158                                       MOV R2,50H
+00ED 1A              159                                       DEC R2                ;K-1 XOR operations in loop, last d
+                             one separately
+00EE                 160                                       form_loop:
+00EE E6              161                                       MOV A,@R0
+00EF 08              162                                       INC R0
+00F0 66              163                                       XRL A,@R0
+00F1 F7              164                                       MOV @R1,A
+00F2 09              165                                       INC R1
+00F3 DAF9            166                                       DJNZ R2,form_loop
+00F5 E6              167                                       MOV A,@R0
+00F6 A851            168                                       MOV R0,51H
+00F8 66              169                                       XRL A,@R0             ;individual XOR operation last
+00F9 F7              170                                       MOV@R1,A
+00FA D002            171                                             POP AR2
+00FC D001            172                                             POP AR1
+00FE D000            173                                             POP AR0
+0100 D0D0            174                                             POP PSW
+0102 22              175                                             RET
+                     176                     
+0200                 177     ORG 200H
+0200                 178     MAIN:
+0200 7581CF          179     MOV SP,#0CFH;-----------------------Initialize STACK POINTER
+0203 755003          180     MOV 50H,#03H;------------------------Set value of K
+0206 755160          181     MOV 51H,#60H;------------------------Array A start location
+0209 754F00          182     MOV 4FH,#00H;------------------------Clear location 4FH
+020C 12007F          183     LCALL READVALUES
+020F 755003          184     MOV 50H,#03H;------------------------Value of K
+0212 755160          185     MOV 51H,#60H;------------------------Array A start location
+0215 755270          186     MOV 52H,#70H;------------------------Array B start location
+0218 1200DF          187     LCALL SHUFFLEBITS
+021B 755003          188     MOV 50H,#03H;------------------------Value of K
+A51 MACRO ASSEMBLER  SHUFFLEBITS                                                          08/13/2015 15:47:39 PAGE     4
+
+021E 755170          189     MOV 51H,#70H;------------------------Array B start Location
+0221 120098          190     LCALL DISPLAY;----------------Display the last four bits of elements on LEDs
+0224 80FE            191     here:SJMP here;---------------------WHILE loop(Infinite Loop)
+                     192     END
+A51 MACRO ASSEMBLER  SHUFFLEBITS                                                          08/13/2015 15:47:39 PAGE     5
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+AR0. . . . . . . .  D ADDR   0000H   A   
+AR1. . . . . . . .  D ADDR   0001H   A   
+AR2. . . . . . . .  D ADDR   0002H   A   
+AR3. . . . . . . .  D ADDR   0003H   A   
+B. . . . . . . . .  D ADDR   00F0H   A   
+BACK . . . . . . .  C ADDR   0018H   A   
+BACK1. . . . . . .  C ADDR   0016H   A   
+BACK2. . . . . . .  C ADDR   0014H   A   
+DELAY. . . . . . .  C ADDR   0003H   A   
+DISPLAY. . . . . .  C ADDR   0098H   A   
+FORM_LOOP. . . . .  C ADDR   00EEH   A   
+HERE . . . . . . .  C ADDR   0224H   A   
+LOOP . . . . . . .  C ADDR   002DH   A   
+LOOP7. . . . . . .  C ADDR   0089H   A   
+MAIN . . . . . . .  C ADDR   0200H   A   
+MERGER . . . . . .  C ADDR   0061H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+PSW. . . . . . . .  D ADDR   00D0H   A   
+READNIBBLE . . . .  C ADDR   0029H   A   
+READVALUES . . . .  C ADDR   007FH   A   
+SHUFFLEBITS. . . .  C ADDR   00DFH   A   
+SP . . . . . . . .  D ADDR   0081H   A   
+STOP . . . . . . .  C ADDR   00DAH   A   
+UPPER_LOOP . . . .  C ADDR   00A3H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

@@ -1,0 +1,3 @@
+".\Objects\matrixMultiplication.obj" 
+TO ".\Objects\quiz1" 
+PRINT(".\Listings\quiz1.m51") RAMSIZE(256) 

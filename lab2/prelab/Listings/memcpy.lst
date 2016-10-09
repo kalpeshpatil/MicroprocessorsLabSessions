@@ -1,0 +1,117 @@
+A51 MACRO ASSEMBLER  MEMCPY                                                               08/04/2015 00:10:49 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02c
+OBJECT MODULE PLACED IN .\Objects\memcpy.obj
+ASSEMBLER INVOKED BY: D:\Programmes\Programmes\C51\BIN\A51.EXE ..\labwork\memcpy.asm SET(SMALL) DEBUG PRINT(.\Listings\m
+                      emcpy.lst) OBJECT(.\Objects\memcpy.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;---------------------------------------------------------------
+                       2     ;TITLE: PRELAB2
+                       3     ;AUTHOR : KALPESH PATIL (130040019)
+                       4     ;---------------------------------------------------------------
+                       5     
+  0090                 6             LED EQU P1
+                       7     
+0000                   8             ORG 00H
+0000 020087            9             LJMP MAIN
+                      10     
+0050                  11             ORG 50H
+                      12             
+0050                  13     memcpy:
+                      14             USING 0
+0050 C0D0             15             PUSH PSW
+0052 C000             16             PUSH AR0
+0054 C001             17             PUSH AR1
+0056 C002             18             PUSH AR2
+0058 C003             19             PUSH AR3
+                      20             
+005A C3               21             CLR C
+005B A851             22             MOV R0, 51H
+005D A952             23             MOV R1, 52H
+005F AA50             24             MOV R2, 50H
+0061 E8               25             MOV A, R0
+0062 99               26             SUBB A, R1
+0063 4009             27             JC reverse_copy
+                      28             
+                      29             
+0065                  30             forward_copy_loop:              
+0065 E6               31                     MOV A, @R0
+0066 F7               32                     MOV @R1, A
+0067 09               33                     INC R1
+0068 08               34                     INC R0
+0069 DAFA             35                     DJNZ R2, forward_copy_loop
+006B 02007C           36                     LJMP ending
+                      37                     
+006E                  38             reverse_copy:
+006E EA               39                     MOV A, R2
+                      40     
+006F 29               41                     ADD A, R1
+0070 F9               42                     MOV R1, A
+0071 EA               43                     MOV A, R2
+0072 28               44                     ADD A, R0
+0073 F8               45                     MOV R0, A
+0074 18               46                     DEC R0
+0075 19               47                     DEC R1
+0076                  48                     reverse_copy_loop:
+0076 E6               49                     MOV A, @R0
+0077 F7               50                     MOV @R1, A
+0078 19               51                     DEC R1
+0079 18               52                     DEC R0
+007A DAFA             53                     DJNZ R2, reverse_copy_loop
+                      54                     
+                      55                     
+                      56                     
+007C                  57             ending: 
+A51 MACRO ASSEMBLER  MEMCPY                                                               08/04/2015 00:10:49 PAGE     2
+
+007C D003             58             POP AR3
+007E D002             59             POP AR2
+0080 D001             60             POP AR1
+0082 D000             61             POP AR0
+0084 D0D0             62             POP PSW
+0086 22               63     RET
+                      64     
+0087                  65     MAIN: 
+0087 755004           66             MOV 50H, #4
+008A 755160           67             MOV 51H, #60H
+008D 755262           68             MOV 52H, #62H
+0090 75600A           69             MOV 60H, #10
+0093 756164           70             MOV 61H, #100
+0096 75626E           71             MOV 62H, #110
+0099 7563A0           72             MOV 63H, #160
+009C 120050           73             LCALL memcpy
+009F 8000             74             SJMP fin
+00A1 80FE             75             fin: SJMP fin
+                      76     END
+                                     
+A51 MACRO ASSEMBLER  MEMCPY                                                               08/04/2015 00:10:49 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+AR0. . . . . . . .  D ADDR   0000H   A   
+AR1. . . . . . . .  D ADDR   0001H   A   
+AR2. . . . . . . .  D ADDR   0002H   A   
+AR3. . . . . . . .  D ADDR   0003H   A   
+ENDING . . . . . .  C ADDR   007CH   A   
+FIN. . . . . . . .  C ADDR   00A1H   A   
+FORWARD_COPY_LOOP.  C ADDR   0065H   A   
+LED. . . . . . . .  D ADDR   0090H   A   
+MAIN . . . . . . .  C ADDR   0087H   A   
+MEMCPY . . . . . .  C ADDR   0050H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+PSW. . . . . . . .  D ADDR   00D0H   A   
+REVERSE_COPY . . .  C ADDR   006EH   A   
+REVERSE_COPY_LOOP.  C ADDR   0076H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

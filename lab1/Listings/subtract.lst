@@ -1,0 +1,73 @@
+A51 MACRO ASSEMBLER  SUBTRACT                                                             07/30/2015 22:42:58 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02c
+OBJECT MODULE PLACED IN .\Objects\subtract.obj
+ASSEMBLER INVOKED BY: D:\Programmes\Programmes\C51\BIN\A51.EXE subtract.asm SET(SMALL) DEBUG PRINT(.\Listings\subtract.l
+                      st) OBJECT(.\Objects\subtract.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     ORG 00H
+0000 020010            2     LJMP MAIN
+0003                   3     SUBTRACT:
+0003 EA                4             MOV A, R2
+0004 9B                5             SUBB A, R3
+0005 FC                6             MOV R4, A
+0006 22                7             RET
+                       8     
+0007                   9     SUBTRACT2:
+0007 EA               10             MOV A, R2
+0008 9B               11             SUBB A, R3
+0009 FC               12             MOV R4, A
+000A 8C63             13             MOV 63H,R4
+000C 30D225           14             JNB PSW.2,FINA
+000F 22               15             RET
+                      16             
+                      17             
+0010                  18     MAIN:   
+0010 C3               19             CLR C
+                      20             
+0011 75617D           21             MOV 61H,#125
+0014 75607D           22             MOV 60H,#125
+0017 757182           23             MOV 71H,#130
+001A 757082           24             MOV 70H,#130
+                      25             
+001D 7400             26             MOV A, #00H
+001F AA61             27             MOV R2, 61H
+0021 AB71             28             MOV R3, 71H
+0023 120003           29             LCALL SUBTRACT
+0026 8C64             30             MOV 64H,R4
+0028 7400             31             MOV A, #00H
+002A AA60             32             MOV R2, 60H
+002C AB70             33             MOV R3, 70H
+002E 120007           34             LCALL SUBTRACT2
+                      35             
+                      36             
+0031 756201           37             MOV 62H,#01H
+                      38     
+                      39     
+0034 020034           40     FINA: LJMP FINA
+                      41             
+                      42     END
+                             
+                                     
+A51 MACRO ASSEMBLER  SUBTRACT                                                             07/30/2015 22:42:58 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+FINA . . . . . . .  C ADDR   0034H   A   
+MAIN . . . . . . .  C ADDR   0010H   A   
+PSW. . . . . . . .  D ADDR   00D0H   A   
+SUBTRACT . . . . .  C ADDR   0003H   A   
+SUBTRACT2. . . . .  C ADDR   0007H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

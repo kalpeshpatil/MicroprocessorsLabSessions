@@ -1,0 +1,95 @@
+A51 MACRO ASSEMBLER  PRELAB_DELAY                                                         08/11/2015 14:22:14 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02c
+OBJECT MODULE PLACED IN .\Objects\prelab_delay.obj
+ASSEMBLER INVOKED BY: D:\Programmes\Programmes\C51\BIN\A51.EXE prelab_delay.asm SET(SMALL) DEBUG PRINT(.\Listings\prelab
+                      _delay.lst) OBJECT(.\Objects\prelab_delay.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;---------------------------------------------------------------
+                       2     ;TITLE: PRELAB2
+                       3     ;AUTHOR : KALPESH PATIL (130040019)
+                       4     ;---------------------------------------------------------------
+                       5     
+  0097                 6             LED EQU P1.7
+                       7     
+0000                   8             ORG 00H
+0000 020100            9             LJMP MAIN
+                      10     
+0050                  11             ORG 50H
+                      12     
+0050                  13     DELAY:
+                      14             USING 0
+0050 C0D0             15             PUSH PSW        ;to make sure valuse of registers are stored somewhere 
+0052 C001             16             PUSH AR1
+0054 C002             17             PUSH AR2
+0056 C003             18             PUSH AR3
+0058 C0F0             19             PUSH B
+005A E54F             20             MOV A, 4FH      ; D
+005C 75F00A           21             MOV B, #10      
+005F A4               22             MUL AB          ;No. of times 50ms blocks to be executed to generate D/2 sec delay
+0060 FB               23             MOV R3, A
+                      24             
+0061                  25             BACK2:                                  ;upper loop running 10*D times
+0061 7AC8             26             MOV R2,#200                             
+0063                  27             BACK1:                                  ;inner loop of 50ms delay
+0063 79FF             28                     MOV R1,#0FFH
+0065                  29                     BACK :                          ;inner to inner loop
+0065 D9FE             30                             DJNZ R1, BACK
+0067 DAFA             31                     DJNZ R2, BACK1
+0069 DBF6             32             DJNZ R3, BACK2
+                      33             
+                      34             
+006B D0F0             35             POP B           ;restoring values of the registers
+006D D003             36             POP AR3
+006F D002             37             POP AR2
+0071 D001             38             POP AR1
+0073 D0D0             39             POP PSW 
+0075 22               40             RET
+                      41     
+0100                  42     ORG 100H
+                      43     
+0100                  44     MAIN:
+0100 754F01           45             MOV 4FH, #1 ;delay time (D/2)
+0103 C297             46             CLR LED                         
+0105                  47             LOOP:           ;generating delay in loop
+0105 C297             48             CLR LED
+0107 120050           49             LCALL DELAY     ;LED off for D/2 sec    
+010A D297             50             SETB LED
+010C 120050           51             LCALL DELAY ;LED on for D/2 sec
+010F 80F4             52             SJMP LOOP
+                      53     
+0111 80FE             54     FIN: SJMP FIN; End of programme
+                      55     
+                      56     END
+                                     
+A51 MACRO ASSEMBLER  PRELAB_DELAY                                                         08/11/2015 14:22:14 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+AR1. . . . . . . .  D ADDR   0001H   A   
+AR2. . . . . . . .  D ADDR   0002H   A   
+AR3. . . . . . . .  D ADDR   0003H   A   
+B. . . . . . . . .  D ADDR   00F0H   A   
+BACK . . . . . . .  C ADDR   0065H   A   
+BACK1. . . . . . .  C ADDR   0063H   A   
+BACK2. . . . . . .  C ADDR   0061H   A   
+DELAY. . . . . . .  C ADDR   0050H   A   
+FIN. . . . . . . .  C ADDR   0111H   A   
+LED. . . . . . . .  B ADDR   0090H.7 A   
+LOOP . . . . . . .  C ADDR   0105H   A   
+MAIN . . . . . . .  C ADDR   0100H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+PSW. . . . . . . .  D ADDR   00D0H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

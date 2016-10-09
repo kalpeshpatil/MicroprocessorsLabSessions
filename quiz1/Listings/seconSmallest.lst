@@ -1,0 +1,116 @@
+A51 MACRO ASSEMBLER  SECONSMALLEST                                                        08/22/2015 11:24:48 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02c
+OBJECT MODULE PLACED IN .\Objects\seconSmallest.obj
+ASSEMBLER INVOKED BY: D:\Programmes\Programmes\C51\BIN\A51.EXE seconSmallest.asm SET(SMALL) DEBUG PRINT(.\Listings\secon
+                      Smallest.lst) OBJECT(.\Objects\seconSmallest.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;---------------------------------------------------------------
+                       2     ;TITLE: second smallest
+                       3     ;AUTHOR : KALPESH PATIL (130040019)
+                       4     ;---------------------------------------------------------------
+                       5     
+                       6     
+0000                   7             ORG 00H
+0000 020442            8             ljmp main
+0400                   9             org 400h
+                      10             using 0
+0400                  11     secondSmallest:
+0400 C0D0             12             push psw
+0402 C000             13             push ar0
+0404 C001             14             push ar1
+0406 C005             15             push ar5        ;current smallest
+0408 C006             16             push ar6        ;current second smallest
+                      17             
+040A 7850             18             mov r0, #50h ;starting location
+040C 7951             19             mov r1, #51h
+040E 7A05             20             mov r2, #5       ;total numbers
+0410 AD50             21             mov r5, 50h
+0412 AE50             22             mov r6, 50h
+                      23             
+0414                  24             loop:
+0414 C3               25                     clr c
+0415 E6               26                     mov a,@r0
+0416 9D               27                     subb a, r5
+0417 400E             28                     jc change_smallest
+0419 600C             29                     jz change_smallest
+041B E6               30                     mov a, @r0
+041C 9E               31                     subb a, r6
+041D 400F             32                     jc change_second
+041F 600D             33                     jz change_second        
+0421 08               34                     flag1:  inc r0
+0422 DAF0             35                                     djnz r2, loop
+0424 020433           36                     ljmp fin
+                      37                     
+0427                  38                     change_smallest:
+0427 ED               39                             mov a, r5
+0428 FE               40                             mov r6, a
+0429 E6               41                             mov a, @r0
+042A FD               42                             mov r5, a
+042B 020421           43                             ljmp flag1
+                      44                     
+042E                  45                     change_second:
+042E E6               46                             mov a, @r0
+042F FE               47                             mov r6, a
+0430 020421           48                             ljmp flag1
+                      49                             
+0433                  50                     fin:
+0433 8D55             51                             mov 55h, r5
+0435 8E56             52                             mov 56h, r6
+                      53                             
+0437 D006             54                     pop ar6
+0439 D005             55                     pop ar5
+043B D001             56                     pop ar1
+043D D000             57                     pop ar0
+A51 MACRO ASSEMBLER  SECONSMALLEST                                                        08/22/2015 11:24:48 PAGE     2
+
+043F D0D0             58                     pop psw
+                      59                     
+0441 22               60             ret
+                      61             
+                      62             
+0442                  63             main:
+0442 755005           64                     mov 50h, #5
+0445 755102           65                     mov 51h, #2
+0448 755202           66                     mov 52h, #2
+044B 755301           67                     mov 53h, #1
+044E 755403           68                     mov 54h, #3             
+0451 120400           69                     lcall secondSmallest
+0454 80FE             70                     stop: sjmp stop
+                      71                     
+                      72     end
+                                     
+                                                     
+                                                     
+                                             
+                                             
+A51 MACRO ASSEMBLER  SECONSMALLEST                                                        08/22/2015 11:24:48 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+AR0. . . . . . . .  D ADDR   0000H   A   
+AR1. . . . . . . .  D ADDR   0001H   A   
+AR5. . . . . . . .  D ADDR   0005H   A   
+AR6. . . . . . . .  D ADDR   0006H   A   
+CHANGE_SECOND. . .  C ADDR   042EH   A   
+CHANGE_SMALLEST. .  C ADDR   0427H   A   
+FIN. . . . . . . .  C ADDR   0433H   A   
+FLAG1. . . . . . .  C ADDR   0421H   A   
+LOOP . . . . . . .  C ADDR   0414H   A   
+MAIN . . . . . . .  C ADDR   0442H   A   
+PSW. . . . . . . .  D ADDR   00D0H   A   
+SECONDSMALLEST . .  C ADDR   0400H   A   
+STOP . . . . . . .  C ADDR   0454H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

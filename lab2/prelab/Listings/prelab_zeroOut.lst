@@ -1,0 +1,70 @@
+A51 MACRO ASSEMBLER  PRELAB_ZEROOUT                                                       08/03/2015 19:56:10 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02c
+OBJECT MODULE PLACED IN .\Objects\prelab_zeroOut.obj
+ASSEMBLER INVOKED BY: D:\Programmes\Programmes\C51\BIN\A51.EXE prelab_zeroOut.asm SET(SMALL) DEBUG PRINT(.\Listings\prel
+                      ab_zeroOut.lst) OBJECT(.\Objects\prelab_zeroOut.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;---------------------------------------------------------------
+                       2     ;TITLE: PRELAB2
+                       3     ;AUTHOR : KALPESH PATIL (130040019)
+                       4     ;---------------------------------------------------------------
+                       5     
+  0094                 6             LED EQU P1.4
+                       7     
+0000                   8             ORG 00H
+0000 020066            9             LJMP MAIN
+                      10     
+0050                  11             ORG 50H
+                      12             
+0050                  13     zeroOut:
+                      14             USING 0
+0050 C0D0             15             PUSH PSW
+0052 C001             16             PUSH AR1
+0054 C002             17             PUSH AR2
+                      18             
+0056 AA50             19             MOV R2, 50H
+0058 A951             20             MOV R1, 51H
+                      21             
+005A                  22             WRITE:
+005A EA               23             MOV A, R2
+005B F7               24             MOV @R1, A
+005C 09               25             INC R1
+005D DAFB             26             DJNZ R2, WRITE
+                      27             
+005F D002             28             POP AR2
+0061 D001             29             POP AR1
+0063 D0D0             30             POP PSW
+0065 22               31             RET
+                      32     
+                      33     
+0066                  34     MAIN:
+0066 755010           35             MOV 50H, #16
+0069 755160           36             MOV 51H, #60H
+006C 120050           37             LCALL zeroOut
+                      38     END
+A51 MACRO ASSEMBLER  PRELAB_ZEROOUT                                                       08/03/2015 19:56:10 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+AR1. . . . . . . .  D ADDR   0001H   A   
+AR2. . . . . . . .  D ADDR   0002H   A   
+LED. . . . . . . .  B ADDR   0090H.4 A   
+MAIN . . . . . . .  C ADDR   0066H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+PSW. . . . . . . .  D ADDR   00D0H   A   
+WRITE. . . . . . .  C ADDR   005AH   A   
+ZEROOUT. . . . . .  C ADDR   0050H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

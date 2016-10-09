@@ -1,0 +1,111 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        08/09/2015  12:04:07  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+D:\PROGRAMMES\PROGRAMMES\C51\BIN\BL51.EXE .\Objects\prelab_display.obj TO .\Objects\prelab PRINT (.\Listings\prelab.m51)
+>>  RAMSIZE (256)
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\prelab_display.obj (PRELAB_DISPLAY)
+
+
+LINK MAP OF MODULE:  .\Objects\prelab (PRELAB_DISPLAY)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     00B8H     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\prelab (PRELAB_DISPLAY)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        PRELAB_DISPLAY
+  D:00F0H         SYMBOL        B
+  C:007BH         SYMBOL        BACK
+  C:0079H         SYMBOL        BACK1
+  C:0077H         SYMBOL        BACK2
+  C:0066H         SYMBOL        DELAY
+  C:008CH         SYMBOL        DISPLAY
+  C:0096H         SYMBOL        FOR
+  D:0090H         SYMBOL        LED
+  C:00A9H         SYMBOL        MAIN
+  D:0090H         SYMBOL        P1
+  D:00D0H         SYMBOL        PSW
+  C:0050H         SYMBOL        SEQUENCE
+  C:005AH         SYMBOL        WRITE
+  C:0000H         LINE#         9
+  C:0050H         LINE#         15
+  C:0052H         LINE#         16
+  C:0054H         LINE#         17
+  C:0056H         LINE#         19
+  C:0058H         LINE#         20
+  C:005AH         LINE#         23
+  C:005BH         LINE#         24
+  C:005CH         LINE#         25
+  C:005DH         LINE#         26
+  C:005FH         LINE#         28
+  C:0061H         LINE#         29
+  C:0063H         LINE#         30
+  C:0065H         LINE#         31
+  C:0066H         LINE#         35
+  C:0068H         LINE#         36
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/09/2015  12:04:07  PAGE 2
+
+
+  C:006AH         LINE#         37
+  C:006CH         LINE#         38
+  C:006EH         LINE#         39
+  C:0070H         LINE#         40
+  C:0072H         LINE#         41
+  C:0075H         LINE#         42
+  C:0076H         LINE#         43
+  C:0077H         LINE#         46
+  C:0079H         LINE#         48
+  C:007BH         LINE#         50
+  C:007DH         LINE#         51
+  C:007FH         LINE#         52
+  C:0081H         LINE#         55
+  C:0083H         LINE#         56
+  C:0085H         LINE#         57
+  C:0087H         LINE#         58
+  C:0089H         LINE#         59
+  C:008BH         LINE#         60
+  C:008CH         LINE#         67
+  C:008EH         LINE#         68
+  C:0090H         LINE#         69
+  C:0092H         LINE#         71
+  C:0094H         LINE#         72
+  C:0096H         LINE#         75
+  C:0097H         LINE#         76
+  C:0099H         LINE#         77
+  C:009AH         LINE#         78
+  C:009CH         LINE#         79
+  C:009FH         LINE#         80
+  C:00A0H         LINE#         81
+  C:00A2H         LINE#         83
+  C:00A4H         LINE#         84
+  C:00A6H         LINE#         85
+  C:00A8H         LINE#         86
+  C:00A9H         LINE#         90
+  C:00ACH         LINE#         91
+  C:00AFH         LINE#         92
+  C:00B2H         LINE#         93
+  C:00B5H         LINE#         94
+  -------         ENDMOD        PRELAB_DISPLAY
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 006BH BYTE ( 5%) *
+******************************************************************************
+
+Program Size: data=8.0 xdata=0 code=184
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
